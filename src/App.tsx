@@ -69,7 +69,7 @@ const App = () => {
   const { t, i18n } = useTranslation();
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [settings, setSettings] = useState<Settings>(defaultSettings);
-  const [selectedBook, setSelectedBook] = useState<number>(settings.language === 'en' ? 0 : 39);
+  const [selectedBook, setSelectedBook] = useState<number>(39);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
@@ -150,7 +150,8 @@ const App = () => {
   function showSearch() { 
     setShowSearchModal(true);
   }
-
+  console.log('showSearchModal', showSearchModal);
+  
   return (
     <div className="app-container" style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
       <div className="header" style={{backgroundColor: darkMode ? '#333' : '#fff', minHeight: showMenu ? '50rem' : 0}}>
@@ -175,21 +176,21 @@ const App = () => {
           {!showMenu && (
           <h3 style={{color: darkMode ? '#fff' : '#000', alignSelf: 'flex-start', padding: 0, margin: 0}}>{translations.find((translation) => translation.language === settings.language)?.bible[selectedBook]?.title}</h3>
           )}
-          <div style={{display: 'flex', alignSelf: 'flex-end'}}>
-        <button className="search-button" style={{backgroundColor: darkMode ? '#333' : '#fff', marginRight: '1rem'}} onClick={showSearch}>
-          <SearchOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
-        </button>
-        <button className="settings-button" onClick={showSettings} style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
-          <SettingsOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
-        </button>
-        </div>
+          <div style={{display: 'flex', alignSelf: 'flex-start'}}>
+            <button className="search-button" style={{backgroundColor: darkMode ? '#333' : '#fff', marginRight: '1rem'}} onClick={showSearch}>
+              <SearchOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
+            </button>
+            <button className="settings-button" onClick={showSettings} style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
+              <SettingsOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
+            </button>
+          </div>
       </div>
-      {!showMenu && (
+      {!showMenu && showSearchModal === false && (
         <div className="main-container">
           <BibleText fontSize={settings.fontSize.toString()}   selectedVerse = {getSelectedVerse()} bibleData = {translations.find((translation) => translation.language === settings.language)?.bible ?? translations[0].bible} language={settings.language} />
         </div>
       )}
-      {showSettingsModal && (
+      {showSettingsModal && !showSearchModal && (
         <SettingsModal
           onClose={() => setShowSettingsModal(false)}
           onLanguageChange={changeLanguage}
@@ -207,7 +208,8 @@ const App = () => {
           onClose={() => setShowSearchModal(false)}
           isOpen={showSearchModal}
           darkMode={darkMode}
-          translations={translations}
+          //books is current translation
+          books={translations.find((translation) => translation.language === settings.language)?.bible ?? translations[0].bible}
           />
       )}
     </div>

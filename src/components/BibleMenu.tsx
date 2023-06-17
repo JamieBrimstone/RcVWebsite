@@ -71,10 +71,14 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
       setBook(-1);
     }
   }
-  console.log('translations', translations);
-  
-  console.log('language', language);
-  console.log('book', book);
+
+  //useEffect that scrolls to top on first render
+  React.useEffect(() => {
+    if (showMenu) {
+      window.scrollTo(0, 0);
+    }
+  }
+  , [showMenu]);
   
   return (
     <div className="bible-menu" style={{...darkModeStyle, overflowY: 'scroll', width: '100%'}}>
@@ -82,23 +86,20 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
       <div>
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
           <ArrowBackIosNewOutlinedIcon onClick={handleBack} sx={{alignSelf: 'center', marginRight: '1rem'}}/>
-          <h2>{translations?.find((translation) => translation?.language === language)?.bible[language === 'en' ? book : book - 39]?.title}</h2>
+          <h2>{translations?.find((translation) => translation?.language === language)?.bible[language === 'en' ? book : book - 39]?.title}{' '}{ chapter !== null ? chapter : ''}</h2>
         </div>
         {chapter ? (
-          <div>
-            <h2>{t('chapter')} {chapter}</h2>
-              <div style={{display: 'flex', flexWrap: 'wrap'}}>
+              <div style={{display: 'flex', flexWrap: 'wrap', marginLeft: '2rem'}}>
                 {translations?.find((translation) => translation?.language === language)?.bible[language === 'en' ? book : book - 39]?.pages[chapter - 1]?.text.map((verse, i) => (
-                  <button key={i} onClick={() => handleVerseSelect(i + 1)} style={{...darkModeStyle, fontSize: '1.5rem', height: '3rem', width: '3rem'}}>
+                  <button key={i} onClick={() => handleVerseSelect(i + 1)} style={{...darkModeStyle, height: '2.5rem', width: '2.5rem', fontSize: '1.5rem'}}>
                     {i + 1}
                   </button>
                 ))}
               </div>
-          </div>
         ) : (
-          <div style={{marginLeft: '2rem'}}>
+          <div style={{display: 'flex', flexWrap: 'wrap', marginLeft: '2rem'}}>
             {Array.from({ length: translations?.find((translation) => translation?.language === language)?.bible[language === 'en' ? book : book - 39]?.chapters ?? 0 }, (_, i) => i + 1).map((chapter) => (
-              <button key={chapter} onClick={() => handleChapterSelect(chapter)} style={{...darkModeStyle, fontSize: '1.5rem', height: '3rem', width: '3rem'}}>
+              <button key={chapter} onClick={() => handleChapterSelect(chapter)} style={{...darkModeStyle, height: '2.5rem', width: '2.5rem', fontSize: '1.5rem'}}>
                 {chapter}
               </button>
             ))}
@@ -111,7 +112,7 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
           <>
             {translations?.find((translation) => translation?.language === language)?.bible.map((book) => (
               <div key={book.id} style={{display: 'flex', flexDirection: 'column'}}>
-              <button key={book.id} onClick={() => handleBookSelect(book)} style={{...darkModeStyle}}>
+              <button key={book.id} onClick={() => handleBookSelect(book)} style={{...darkModeStyle, justifyContent: 'flex-start', display: 'flex', margin: 0}}>
                 {book.title}
               </button>
               </div>
@@ -121,22 +122,22 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
         {language === 'en' && (
           <>
             <div style={{display: 'flex', flexDirection: 'row'}}>
-              <div style={{display: 'flex', flexDirection: 'column'}}>
+              <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
                 {translations?.find((translation) => translation?.language === language)?.bible.map((book) => (
                   <>
                     {book.id < 39 && (
-                      <button key={book.id} onClick={() => handleBookSelect(book)} style={{...darkModeStyle}}>
+                      <button key={book.id} onClick={() => handleBookSelect(book)} style={{...darkModeStyle, justifyContent: 'flex-start', display: 'flex', margin: 0, width: 'max-content'}}>
                       {book.title}
                       </button>
                     )}
                   </>
                 ))}
               </div>
-              <div style={{display: 'flex', flexDirection: 'column'}}>
+              <div style={{display: 'flex', flexDirection: 'column', width: '100%'}}>
                 {translations?.find((translation) => translation?.language === language)?.bible.map((book) => (
                   <>
                     {book.id > 38 && (
-                      <button key={book.id} onClick={() => handleBookSelect(book)} style={{...darkModeStyle}}>
+                      <button key={book.id} onClick={() => handleBookSelect(book)} style={{...darkModeStyle, justifyContent: 'flex-start', display: 'flex', margin: 0, width: 'max-content'}}>
                       {book.title}
                       </button>
                     )}

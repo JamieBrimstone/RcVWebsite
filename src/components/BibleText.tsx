@@ -21,7 +21,13 @@ const BibleText: React.FC<BibleTextProps> = ({
   language,
   fontSize,
 }) => {    
+    console.log('selectedVerse', selectedVerse);
+    console.log('bibleData', bibleData);
+    
+    
     const book = bibleData.find((book) => book.id === selectedVerse.book )
+    console.log('book', book);
+    
     const ref = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
         if (selectedVerse.chapter && selectedVerse.verse) {

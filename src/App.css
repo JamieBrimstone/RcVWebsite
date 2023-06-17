@@ -35,6 +35,7 @@
   top: 0;
   overflow: scroll;
   overflow-y: scroll;
+  justify-self: flex-start;
 }
 
 .settings-button {
