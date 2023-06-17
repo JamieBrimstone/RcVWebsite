@@ -44,6 +44,13 @@
   background-color: #333
 }
 
+.search-button {
+  cursor: pointer;
+  align-self: flex-start;
+  padding: 0;
+  background-color: #333
+}
+
 .main-container {
   flex: 1;
   display: flex;

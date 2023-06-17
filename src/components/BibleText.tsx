@@ -21,15 +21,13 @@ const BibleText: React.FC<BibleTextProps> = ({
   language,
   fontSize,
 }) => {    
-    const bookID = language === 'en' ? selectedVerse.book : selectedVerse.book > 26 ? selectedVerse.book - 78 : selectedVerse.book;
-    const book = language === 'en' ? bibleData[bibleData.findIndex((book) => book.id === bookID)] : bibleData[bibleData.findIndex((book) => book.id === (bookID > 26 ? book.id - 39 : book.id))];
-    
+    const book = bibleData.find((book) => book.id === selectedVerse.book )
     const ref = React.useRef<HTMLDivElement>(null);
     React.useEffect(() => {
-        if (selectedVerse.verse) {
-            const element = document.getElementById(`verse-${selectedVerse.verse - 1}`);
-            element?.scrollIntoView({ behavior: 'smooth' });
-        }
+        if (selectedVerse.chapter && selectedVerse.verse) {
+            const element = document.getElementById(`chapter-${selectedVerse.chapter}` + `verse-${selectedVerse.verse - 1}`);
+            element?.scrollIntoView({ behavior: "smooth" });
+        }                
     }
     , [ref, selectedVerse]);
     return ( 
@@ -41,7 +39,7 @@ const BibleText: React.FC<BibleTextProps> = ({
                         <div key={page.id}>
                             <h3 id={`chapter-${page.id}`}>{book.title + ' ' + page.id}</h3>
                             {page.text.map((line, index) => (
-                                <p key={'verse-' + index + 1} id={`verse-${index + 1}`}>{line}</p>
+                                <p key={'verse-' + index + 1} id={`chapter-${page.id}` + `verse-${index + 1}`}>{line}</p>
                             ))}
                         </div>
                     ))}

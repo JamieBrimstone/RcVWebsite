@@ -8,7 +8,9 @@ import english from './data/english2.json';
 import german from './data/german.json';
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import './i18n.js'
+import { Search } from './components/Search';
 
 export interface BibleText {
   text: string;
@@ -71,35 +73,36 @@ const App = () => {
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
+  const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   console.log('showMenu', showMenu);
   
-    const englishJSON = english as Book[]
-    console.log('englishJSON', englishJSON);
-    
-    const germanJSON = german as Book[]
-    console.log('germanJSON', germanJSON);
-    const translations: Translation[] = [
-      {
-        name: 'English',
-        abbreviation: 'RCV',
-        language: 'en',
-        bible: englishJSON,
-      },
-      {
-        name: 'German',
-        abbreviation: 'RCV',
-        language: 'de',
-        bible: germanJSON,
-      },
-    ];
+  const englishJSON = english as Book[]
+  console.log('englishJSON', englishJSON);
+  
+  const germanJSON = german as Book[]
+  console.log('germanJSON', germanJSON);
+  const translations: Translation[] = [
+    {
+      name: 'English',
+      abbreviation: 'RCV',
+      language: 'en',
+      bible: englishJSON,
+    },
+    {
+      name: 'German',
+      abbreviation: 'RCV',
+      language: 'de',
+      bible: germanJSON,
+    },
+  ];
 
   // Change language
   const changeLanguage = (language: string) => {
     
     setSettings({ ...settings, language });
-    if (language === 'de') {
-      setSelectedBook(selectedBook + 39)
-    }    
+    // if (language === 'de') {
+    //   setSelectedBook(selectedBook + 39)
+    // }    
   };
 
   // Change font size
@@ -123,15 +126,6 @@ const App = () => {
     setShowMenu(!showMenu);
   }
 
-  function handleBack() {
-    if (selectedChapter !== null){ 
-      setSelectedChapter(null);
-      setSelectedVerse(null);
-    } else if (selectedBook !== null) {
-      setSelectedBook(0);
-    }
-  }
-
   function handleSelectedVerse(verse: number | null) {
     setSelectedVerse(verse);
     setShowMenu(false);
@@ -152,6 +146,10 @@ const App = () => {
   React.useEffect(() => {
     i18n.changeLanguage(settings.language);
   }, [i18n, settings.language]);
+
+  function showSearch() { 
+    setShowSearchModal(true);
+  }
 
   return (
     <div className="app-container" style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
@@ -177,9 +175,14 @@ const App = () => {
           {!showMenu && (
           <h3 style={{color: darkMode ? '#fff' : '#000', alignSelf: 'flex-start', padding: 0, margin: 0}}>{translations.find((translation) => translation.language === settings.language)?.bible[selectedBook]?.title}</h3>
           )}
+          <div style={{display: 'flex', alignSelf: 'flex-end'}}>
+        <button className="search-button" style={{backgroundColor: darkMode ? '#333' : '#fff', marginRight: '1rem'}} onClick={showSearch}>
+          <SearchOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
+        </button>
         <button className="settings-button" onClick={showSettings} style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
           <SettingsOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
         </button>
+        </div>
       </div>
       {!showMenu && (
         <div className="main-container">
@@ -198,6 +201,14 @@ const App = () => {
           setLanguage={changeLanguage}
           darkMode={darkMode}
         />
+      )}
+      {showSearchModal && (
+        <Search
+          onClose={() => setShowSearchModal(false)}
+          isOpen={showSearchModal}
+          darkMode={darkMode}
+          translations={translations}
+          />
       )}
     </div>
   );

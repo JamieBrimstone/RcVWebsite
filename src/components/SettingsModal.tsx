@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import { Translation } from '../App';
 import { useTranslation } from 'react-i18next';
+import './SettingsModal.css';
 
 interface SettingsModalProps {
   translations: Translation[];
@@ -31,7 +32,7 @@ export function SettingsModal(props: SettingsModalProps) {
       <h2 style={darkModeStyle}>Settings</h2>
         <div style={{...darkModeStyle, display: 'flex', flexDirection: 'column'}}>
         <label style={{...darkModeStyle, paddingBottom: '.5rem'}}>{t('select_language')}</label>
-        <select value={props.language} onChange={(e) => {props.setLanguage(e.target.value); props.onClose()}}>
+        <select className="custom-select" style={{fontSize: '16px', position: 'relative'}} value={props.language} onChange={(e) => {props.setLanguage(e.target.value); props.onClose()}}>
           {props.translations.map((translation) => (
             <option key={translation.language} value={translation.language}>
               {translation.name} - {translation.abbreviation}
@@ -41,7 +42,7 @@ export function SettingsModal(props: SettingsModalProps) {
         </div>
         <div style={{...darkModeStyle, display: 'flex', flexDirection: 'column', paddingTop: '1rem'}}>
         <label style={{...darkModeStyle, paddingBottom: '.5rem'}}>Select Font Size:</label>
-        <select value={props.fontSize} 
+        <select className="custom-select" style={{fontSize: '16px', position: 'relative'}} value={props.fontSize} 
           onChange={(e) => {
             props.onFontSizeChange(Number(e.target.value)); 
             props.onClose()
