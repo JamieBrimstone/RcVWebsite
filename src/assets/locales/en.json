@@ -3,5 +3,8 @@
     "select_font_size": "Select Font Size",
     "chapter": "Chapter",
     "verse": "Verse",
-    "search": "Search coming soon!"
+    "search": "Search coming soon!",
+    "settings": "Settings",
+    "cancel": "Cancel",
+    "save": "Save"
 }

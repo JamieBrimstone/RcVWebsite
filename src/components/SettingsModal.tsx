@@ -29,7 +29,7 @@ export function SettingsModal(props: SettingsModalProps) {
   return (
     <Dialog open={props.isOpen} onClose={props.onClose} sx={darkModeStyle}>
       <Box sx={[darkModeStyle, {p: '2rem'}]}>
-      <h2 style={darkModeStyle}>Settings</h2>
+      <h2 style={darkModeStyle}>{t('settings')}</h2>
         <div style={{...darkModeStyle, display: 'flex', flexDirection: 'column'}}>
         <label style={{...darkModeStyle, paddingBottom: '.5rem'}}>{t('select_language')}</label>
         <select className="custom-select" style={{fontSize: '16px', position: 'relative'}} value={props.language} onChange={(e) => {props.setLanguage(e.target.value); props.onClose()}}>
@@ -41,7 +41,7 @@ export function SettingsModal(props: SettingsModalProps) {
         </select>
         </div>
         <div style={{...darkModeStyle, display: 'flex', flexDirection: 'column', paddingTop: '1rem'}}>
-        <label style={{...darkModeStyle, paddingBottom: '.5rem'}}>Select Font Size:</label>
+        <label style={{...darkModeStyle, paddingBottom: '.5rem'}}>{t('select_font_size')}</label>
         <select className="custom-select" style={{fontSize: '16px', position: 'relative'}} value={props.fontSize} 
           onChange={(e) => {
             props.onFontSizeChange(Number(e.target.value)); 
@@ -59,8 +59,10 @@ export function SettingsModal(props: SettingsModalProps) {
         </div>
       {/* Create cancel and save button  */}
       <div style={{...darkModeStyle, display: 'flex', paddingTop: '3rem'}}>
-        <button style={{...darkModeStyle}} onClick={props.onClose}>Cancel</button>
-        <button style={{...darkModeStyle}} onClick={props.onClose}>Save</button>
+        <button style={{...darkModeStyle}} onClick={props.onClose}>{t('cancel')}</button>
+        <button style={{...darkModeStyle}} onClick={props.onClose}>{t(
+          'save'
+        )}</button>
       </div>
       </Box>
     </Dialog>

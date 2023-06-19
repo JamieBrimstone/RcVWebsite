@@ -154,11 +154,42 @@ const App = () => {
   
   return (
     <div className="app-container" style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
-      <div className="header" style={{backgroundColor: darkMode ? '#333' : '#fff', minHeight: showMenu ? '50rem' : 0}}>
+      <div className="header" style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
         <div style={{display: 'flex', alignItems: 'space-between', alignSelf: 'flex-start'}}>
           <MenuOutlinedIcon onClick={showBibleMenu} sx={{alignSelf: 'flex-start'}}/>
         </div>
-        {showMenu && (
+        {/* {showMenu && (
+          <BibleMenu
+              translations={translations}
+              selectedBook={selectedBook}
+              setSelectedBook={setSelectedBook}
+              selectedChapter={selectedChapter}
+              setSelectedChapter={setSelectedChapter}
+              selectedVerse={selectedVerse}
+              setSelectedVerse={handleSelectedVerse}
+              language={settings.language}
+              setLanguage={changeLanguage}
+              showMenu={showMenu}
+              darkMode={darkMode}
+            />
+          )} */}
+          {!showMenu && (
+          <h3 style={{color: darkMode ? '#fff' : '#000', alignSelf: 'flex-start', padding: 0, margin: 0}}>{translations.find((translation) => translation.language === settings.language)?.bible[selectedBook]?.title}</h3>
+          )}
+          <div style={{display: 'flex', alignSelf: 'flex-start'}}>
+            <button className="search-button" style={{backgroundColor: darkMode ? '#333' : '#fff', marginRight: '1rem'}} onClick={showSearch}>
+              <SearchOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
+            </button>
+            <button className="settings-button" onClick={showSettings} style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
+              <SettingsOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
+            </button>
+          </div>
+      </div>
+      <div className="main-container">
+        {!showMenu && showSearchModal === false && (
+            <BibleText fontSize={settings.fontSize.toString()}   selectedVerse = {getSelectedVerse()} bibleData = {translations.find((translation) => translation.language === settings.language)?.bible ?? translations[0].bible} language={settings.language} />
+        )}
+                {showMenu && (
           <BibleMenu
               translations={translations}
               selectedBook={selectedBook}
@@ -173,23 +204,7 @@ const App = () => {
               darkMode={darkMode}
             />
           )}
-          {!showMenu && (
-          <h3 style={{color: darkMode ? '#fff' : '#000', alignSelf: 'flex-start', padding: 0, margin: 0}}>{translations.find((translation) => translation.language === settings.language)?.bible[selectedBook]?.title}</h3>
-          )}
-          <div style={{display: 'flex', alignSelf: 'flex-start'}}>
-            <button className="search-button" style={{backgroundColor: darkMode ? '#333' : '#fff', marginRight: '1rem'}} onClick={showSearch}>
-              <SearchOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
-            </button>
-            <button className="settings-button" onClick={showSettings} style={{backgroundColor: darkMode ? '#333' : '#fff'}}>
-              <SettingsOutlinedIcon sx={{padding: 0}} style={{padding: 0, margin: 0, backgroundColor: darkMode ? '#333' : '#fff'}}/>
-            </button>
-          </div>
-      </div>
-      {!showMenu && showSearchModal === false && (
-        <div className="main-container">
-          <BibleText fontSize={settings.fontSize.toString()}   selectedVerse = {getSelectedVerse()} bibleData = {translations.find((translation) => translation.language === settings.language)?.bible ?? translations[0].bible} language={settings.language} />
         </div>
-      )}
       {showSettingsModal && !showSearchModal && (
         <SettingsModal
           onClose={() => setShowSettingsModal(false)}

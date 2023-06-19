@@ -3,5 +3,8 @@
     "select_font_size": "Wähle Schriftgröße",
     "chapter": "Kapitel",
     "verse": "Vers",
-    "search": "Suche kommt bald!"
+    "search": "Suche kommt bald!",
+    "settings": "Einstellungen",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
 }
