@@ -1,10 +1,12 @@
 {
-    "select_language": "Wähle Sprache",
-    "select_font_size": "Wähle Schriftgröße",
-    "chapter": "Kapitel",
-    "verse": "Vers",
-    "search": "Suche kommt bald!",
-    "settings": "Einstellungen",
-    "cancel": "Abbrechen",
-    "save": "Speichern"
+  "select_language": "Wähle Sprache",
+  "select_font_size": "Wähle Schriftgröße",
+  "chapter": "Kapitel",
+  "verse": "Vers",
+  "search": "Suche",
+  "settings": "Einstellungen",
+  "cancel": "Abbrechen",
+  "save": "Speichern",
+  "no_results": "Keine Ergebnisse gefunden",
+  "search_history": "Suchverlauf"
 }

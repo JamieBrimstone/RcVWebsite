@@ -1,10 +1,12 @@
 {
-    "select_language": "Select Language",
-    "select_font_size": "Select Font Size",
-    "chapter": "Chapter",
-    "verse": "Verse",
-    "search": "Search coming soon!",
-    "settings": "Settings",
-    "cancel": "Cancel",
-    "save": "Save"
+  "select_language": "Select Language",
+  "select_font_size": "Select Font Size",
+  "chapter": "Chapter",
+  "verse": "Verse",
+  "search": "Search",
+  "settings": "Settings",
+  "cancel": "Cancel",
+  "save": "Save",
+  "no_results": "No results found",
+  "search_history": "Search History"
 }
