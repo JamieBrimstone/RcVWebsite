@@ -108,9 +108,7 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
             </h2>
           </div>
           {chapter ? (
-            <div
-              style={{ display: "flex", flexWrap: "wrap", marginLeft: "2rem" }}
-            >
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
               {translations
                 ?.find((translation) => translation?.language === language)
                 ?.bible[language === "en" ? book : book - 39]?.pages[
@@ -122,7 +120,7 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
                     style={{
                       ...darkModeStyle,
                       height: "2.5rem",
-                      width: "2.5rem",
+                      width: "3.25rem",
                       fontSize: "1.5rem",
                     }}
                   >
@@ -150,7 +148,7 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
                   style={{
                     ...darkModeStyle,
                     height: "2.5rem",
-                    width: "2.5rem",
+                    width: "3.25rem",
                     fontSize: "1.5rem",
                   }}
                 >
