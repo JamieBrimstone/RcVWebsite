@@ -158,7 +158,7 @@ export function Search(props: SettingsModalProps) {
               </li>
             ))}
           </ul>
-          <button onClick={handleSearch}>{t("search")}</button>
+          {/* <button onClick={handleSearch}>{t("search")}</button> */}
         </>
       )}
       {noResults && <p>{t("no_results")}</p>}
