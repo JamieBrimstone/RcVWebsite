@@ -285,6 +285,9 @@ const App = () => {
           translations={translations}
           setLanguage={changeLanguage}
           darkMode={darkMode}
+          onChangeDarkMode={() => {
+            setDarkMode(!darkMode);
+          }}
         />
       )}
     </div>

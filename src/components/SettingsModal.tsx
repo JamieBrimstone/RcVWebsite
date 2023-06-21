@@ -12,6 +12,7 @@ interface SettingsModalProps {
   fontSize: number;
   onLanguageChange: (language: string) => void;
   onFontSizeChange: (fontSize: number) => void;
+  onChangeDarkMode: (darkMode: boolean) => void;
   setLanguage: (language: string) => void;
   darkMode: boolean;
 }
@@ -82,6 +83,31 @@ export function SettingsModal(props: SettingsModalProps) {
             <option value="26">26</option>
           </select>
         </div>
+        {/* implement Dark mode setting
+        <div
+          style={{
+            ...darkModeStyle,
+            display: "flex",
+            flexDirection: "column",
+            paddingTop: "1rem",
+          }}
+        >
+          <label style={{ ...darkModeStyle, paddingBottom: ".5rem" }}>
+            {t("dark_mode")}
+          </label>
+          <select
+            className="custom-select"
+            style={{ fontSize: "16px", position: "relative" }}
+            value={props.darkMode.toString()}
+            onChange={(e) => {
+              props.onChangeDarkMode(e.target.value === "true");
+              props.onClose();
+            }}
+          >
+            <option value="true">{t("on")}</option>
+            <option value="false">{t("off")}</option>
+          </select>
+        </div> */}
         {/* Create cancel and save button  */}
         <div style={{ ...darkModeStyle, display: "flex", paddingTop: "3rem" }}>
           <button style={{ ...darkModeStyle }} onClick={props.onClose}>

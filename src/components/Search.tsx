@@ -117,7 +117,6 @@ export function Search(props: SettingsModalProps) {
       }
       setNoResults(false);
     }
-    setSearchText("");
   };
 
   return (
@@ -125,6 +124,7 @@ export function Search(props: SettingsModalProps) {
       <input
         type="search"
         enterKeyHint="search"
+        list={searchText === "" ? "searchHistory" : undefined}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             handleSearch();
@@ -149,16 +149,24 @@ export function Search(props: SettingsModalProps) {
       />
       {focused && (
         <>
-          <div>{t("search_history")}</div>
-          <ul>
+          {/* <div>{t("search_history")}</div> */}
+          <datalist
+            onClick={(e) => {
+              console.log(
+                "e.currentTarget.innerText",
+                e.currentTarget.innerText
+              );
+
+              setSearchText(e.currentTarget.innerText || "");
+            }}
+            id="searchHistory"
+          >
             {searchHistory.map((search, index) => (
-              <li key={index} onClick={() => setSearchText(search)}>
-                {" "}
+              <option key={index} style={{ cursor: "pointer" }} value={search}>
                 {search}
-              </li>
+              </option>
             ))}
-          </ul>
-          {/* <button onClick={handleSearch}>{t("search")}</button> */}
+          </datalist>
         </>
       )}
       {noResults && <p>{t("no_results")}</p>}
@@ -200,15 +208,7 @@ export function Search(props: SettingsModalProps) {
             | ReactPortal
             | null
             | undefined;
-          text:
-            | string
-            | number
-            | boolean
-            | ReactElement<any, string | JSXElementConstructor<any>>
-            | ReactFragment
-            | ReactPortal
-            | null
-            | undefined;
+          text: string;
         }) => (
           <div
             key={`${result.book}-${result.chapter}-${result.verse}`}
@@ -225,7 +225,18 @@ export function Search(props: SettingsModalProps) {
             <h3 style={{ margin: 0 }}>
               {result.book} {result.chapter}:{result.verse}
             </h3>
-            <p style={{ marginTop: 0 }}>{result.text}</p>
+            {/*             Highlight search term
+             */}
+            <p
+              style={{ marginTop: 0 }}
+              dangerouslySetInnerHTML={{
+                __html: result?.text?.replace(
+                  new RegExp(searchText, "gi"),
+                  (match) =>
+                    `<span style="background-color: yellow">${match}</span>`
+                ),
+              }}
+            ></p>
           </div>
         )
       )}
