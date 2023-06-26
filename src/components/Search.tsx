@@ -233,7 +233,9 @@ export function Search(props: SettingsModalProps) {
                 __html: result?.text?.replace(
                   new RegExp(searchText, "gi"),
                   (match) =>
-                    `<span style="background-color: yellow">${match}</span>`
+                    `<span style="background-color: ${
+                      props.darkMode ? "orange" : "yellow"
+                    }">${match}</span>`
                 ),
               }}
             ></p>
