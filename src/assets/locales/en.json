@@ -8,5 +8,8 @@
   "cancel": "Cancel",
   "save": "Save",
   "no_results": "No results found",
-  "search_history": "Search History"
+  "search_history": "Search History",
+  "search_picker_enter": "Enter verses seperated by commas",
+  "search_picker_short": "You must use shorthand",
+  "search_picker_example": "Example: 1 John 1:1, 1 John 1:2, 1 John 1:3"
 }

@@ -62,9 +62,11 @@ const defaultSettings: Settings = {
   language: "en",
   fontSize: 16,
 };
+export const englishJSON = english as Book[];
+export const germanJSON = german as Book[];
 
 const App = () => {
-  console.log("App rendered");
+  // console.log("App rendered");
 
   const { t, i18n } = useTranslation();
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -74,13 +76,6 @@ const App = () => {
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
-  console.log("showMenu", showMenu);
-
-  const englishJSON = english as Book[];
-  console.log("englishJSON", englishJSON);
-
-  const germanJSON = german as Book[];
-  console.log("germanJSON", germanJSON);
   const translations: Translation[] = [
     {
       name: "English",
@@ -153,7 +148,6 @@ const App = () => {
     setShowSearchModal(!showSearchModal);
     setShowMenu(false);
   }
-  console.log("showSearchModal", showSearchModal);
 
   return (
     <div
@@ -176,7 +170,7 @@ const App = () => {
             sx={{ alignSelf: "flex-start", cursor: "pointer" }}
           />
         </div>
-        {!showMenu && (
+        {!showMenu && !showSearchModal && (
           <h3
             style={{
               color: darkMode ? "#fff" : "#000",
@@ -192,7 +186,25 @@ const App = () => {
             }
           </h3>
         )}
-        <div style={{ display: "flex", alignSelf: "flex-start" }}>
+        {showSearchModal && (
+          <h3
+            style={{
+              color: darkMode ? "#fff" : "#000",
+              alignSelf: "flex-start",
+              padding: 0,
+              margin: 0,
+            }}
+          >
+            {t("search")}
+          </h3>
+        )}
+        <div
+          style={{
+            display: "flex",
+            alignSelf: "flex-start",
+            alignItems: "center",
+          }}
+        >
           <button
             className="search-button"
             style={{
@@ -202,11 +214,12 @@ const App = () => {
             onClick={showSearch}
           >
             <SearchOutlinedIcon
-              sx={{ padding: 0 }}
+              sx={{ padding: 0, height: "1.5rem", width: "1.5rem" }}
               style={{
                 padding: 0,
                 margin: 0,
                 backgroundColor: darkMode ? "#333" : "#fff",
+                color: darkMode ? "#fff" : "#000",
               }}
             />
           </button>
@@ -221,6 +234,7 @@ const App = () => {
                 padding: 0,
                 margin: 0,
                 backgroundColor: darkMode ? "#333" : "#fff",
+                color: darkMode ? "#fff" : "#000",
               }}
             />
           </button>

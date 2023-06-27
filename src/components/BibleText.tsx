@@ -20,15 +20,15 @@ const BibleText: React.FC<BibleTextProps> = ({
   language,
   fontSize,
 }) => {
-  console.log("selectedVerse", selectedVerse);
-  console.log("bibleData", bibleData);
+  // console.log("selectedVerse", selectedVerse);
+  // console.log("bibleData", bibleData);
 
   const book = bibleData.find((book) => book.id === selectedVerse.book);
   console.log("book", book);
 
   const ref = React.useRef<HTMLDivElement>(null);
   React.useEffect(() => {
-    console.log("ref", ref);
+    // console.log("ref", ref);
 
     if (ref.current) {
       if (selectedVerse.chapter && selectedVerse.verse) {
@@ -40,7 +40,7 @@ const BibleText: React.FC<BibleTextProps> = ({
                 : selectedVerse.verse
             }`
         );
-        console.log("element", element);
+        // console.log("element", element);
         element?.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }

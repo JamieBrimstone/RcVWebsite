@@ -70,74 +70,6 @@ var BkAbbr = [
   "Jud",
   "Rev",
 ];
-var BkAbbrNum = {
-  Gen: 0,
-  Exo: 1,
-  Lev: 2,
-  Num: 3,
-  Deu: 4,
-  Jos: 5,
-  Jdg: 6,
-  Rut: 7,
-  "1Sa": 8,
-  "2Sa": 9,
-  "1Ki": 10,
-  "2Ki": 11,
-  "1Ch": 12,
-  "2Ch": 13,
-  Ezr: 14,
-  Neh: 15,
-  Est: 16,
-  Job: 17,
-  Psa: 18,
-  Prv: 19,
-  Ecc: 20,
-  SoS: 21,
-  Isa: 22,
-  Jer: 23,
-  Lam: 24,
-  Ezk: 25,
-  Dan: 26,
-  Hos: 27,
-  Joe: 28,
-  Amo: 29,
-  Oba: 30,
-  Jon: 31,
-  Mic: 32,
-  Nah: 33,
-  Hab: 34,
-  Zep: 35,
-  Hag: 36,
-  Zec: 37,
-  Mal: 38,
-  Mat: 39,
-  Mrk: 40,
-  Luk: 41,
-  Joh: 42,
-  Act: 43,
-  Rom: 44,
-  "1Co": 45,
-  "2Co": 46,
-  Gal: 47,
-  Eph: 48,
-  Phi: 49,
-  Col: 50,
-  "1Th": 51,
-  "2Th": 52,
-  "1Ti": 53,
-  "2Ti": 54,
-  Tit: 55,
-  Phm: 56,
-  Heb: 57,
-  Jam: 58,
-  "1Pe": 59,
-  "2Pe": 60,
-  "1Jo": 61,
-  "2Jo": 62,
-  "3Jo": 63,
-  Jud: 64,
-  Rev: 65,
-};
 var BkRef = [
   "Gen.",
   "Exo.",
@@ -274,6 +206,75 @@ var BkName = [
   "Jude",
   "Revelation",
 ];
+
+var BkAbbrNum = {
+  Gen: 0,
+  Exo: 1,
+  Lev: 2,
+  Num: 3,
+  Deu: 4,
+  Jos: 5,
+  Jdg: 6,
+  Rut: 7,
+  "1Sa": 8,
+  "2Sa": 9,
+  "1Ki": 10,
+  "2Ki": 11,
+  "1Ch": 12,
+  "2Ch": 13,
+  Ezr: 14,
+  Neh: 15,
+  Est: 16,
+  Job: 17,
+  Psa: 18,
+  Prv: 19,
+  Ecc: 20,
+  SoS: 21,
+  Isa: 22,
+  Jer: 23,
+  Lam: 24,
+  Ezk: 25,
+  Dan: 26,
+  Hos: 27,
+  Joe: 28,
+  Amo: 29,
+  Oba: 30,
+  Jon: 31,
+  Mic: 32,
+  Nah: 33,
+  Hab: 34,
+  Zep: 35,
+  Hag: 36,
+  Zec: 37,
+  Mal: 38,
+  Mat: 39,
+  Mrk: 40,
+  Luk: 41,
+  Joh: 42,
+  Act: 43,
+  Rom: 44,
+  "1Co": 45,
+  "2Co": 46,
+  Gal: 47,
+  Eph: 48,
+  Phi: 49,
+  Col: 50,
+  "1Th": 51,
+  "2Th": 52,
+  "1Ti": 53,
+  "2Ti": 54,
+  Tit: 55,
+  Phm: 56,
+  Heb: 57,
+  Jam: 58,
+  "1Pe": 59,
+  "2Pe": 60,
+  "1Jo": 61,
+  "2Jo": 62,
+  "3Jo": 63,
+  Jud: 64,
+  Rev: 65,
+};
 var BkNumChs = [
   50, 40, 27, 36, 34, 24, 21, 4, 31, 24, 22, 25, 29, 36, 10, 13, 10, 42, 150,
   31, 12, 8, 66, 52, 5, 48, 12, 14, 3, 9, 1, 4, 7, 3, 3, 3, 2, 14, 4, 28, 16,
@@ -616,7 +617,7 @@ function recog_bkname(s) {
   return null;
 }
 // Returns an array of text vrefs eg. "Gen1:1" for verse refs given.
-function parse_vrefs(s) {
+export function parse_vrefs(s) {
   var a,
     i,
     rv = [],
@@ -1219,3 +1220,113 @@ function listv_restore() {
 }
 ////////////////////////////////////////////////////////////////////
 resume_js();
+
+// function parse_vrefs(s: any) {
+//   let a,
+//     i,
+//     rv = [],
+//     bk = 0,
+//     ch = 0,
+//     vn,
+//     is_chap = 1,
+//     has_bk = 0,
+//     has_range = 0;
+//   try {
+//     let t = s;
+//     while (t.length) {
+//       // Any human-readable book name.
+//       if ((a = recog_bkname(t))) {
+//         if (has_bk) rv.push(BkAbbr[bk]);
+//         else has_bk = 1;
+//         bk = a[0];
+//         is_chap = 1;
+//         t = t.substring(a[1].length);
+//         continue;
+//       }
+//       // Whole chapter:verse notations.
+//       a = /^((\d+)[\s\xA0]*:[\s\xA0]*(\d+)[a-z]?)/.exec(t);
+//       if (a) {
+//         ch = a[2] as any;
+//         vn = a[3];
+//         is_chap = 0;
+//         has_bk = 0;
+//         rv.push(BkAbbr[bk] + ch + ":" + vn);
+//         t = t.substring(a[1].length);
+//         continue;
+//       }
+//       // Single number -- must be verse.
+//       a = /^((\d+)[a-z])/.exec(t);
+//       if (a) {
+//         vn = a[2];
+//         is_chap = 0;
+//         has_bk = 0;
+//         rv.push(BkAbbr[bk] + ch + ":" + vn);
+//         t = t.substring(a[1].length);
+//         continue;
+//       }
+//       // Single number -- could be chapter or verse.
+//       a = /^(\d+)/.exec(t);
+//       if (a) {
+//         if (is_chap) {
+//           ch = a[1] as any;
+//           rv.push(BkAbbr[bk] + ch);
+//         } else {
+//           vn = a[1];
+//           rv.push(BkAbbr[bk] + ch + ":" + vn);
+//         }
+//         has_bk = 0;
+//         t = t.substring(a[1].length);
+//         continue;
+//       }
+//       // Range.
+//       if (/^[\-\�]/.test(t)) {
+//         has_range = 1;
+//         has_bk = 0;
+//         rv.push("-");
+//         t = t.substring(1);
+//         continue;
+//       }
+//       // Any junk string. Eat it.
+//       a = /^([a-zA-Z]+)/.exec(t);
+//       if (a) {
+//         t = t.substring(a[1].length);
+//         continue;
+//       }
+//       // Semi-colon.
+//       if (t.charAt(0) == ";") {
+//         if (has_bk) {
+//           rv.push(BkAbbr[bk]);
+//           has_bk = 0;
+//         }
+//       }
+//       // Any other stuff. Eat one character.
+//       t = t.substring(1);
+//     }
+//     if (has_bk) rv.push(BkAbbr[bk]);
+
+//     // Fix up all ranges.
+//     if (has_range) {
+//       // Remove duplicate ranges.
+//       for (i = 0; i < rv.length - 1; i++)
+//         if (rv[i] == "-" && rv[i + 1] == "-") {
+//           rv.splice(i, 1);
+//           i--;
+//         }
+
+//       // Remove leading and trailing ranges.
+//       while (rv.length && rv[0] == "-") rv.shift();
+//       while (rv.length && rv[rv.length - 1] == "-") rv.pop();
+
+//       // Merge ranges.
+//       for (i = 1; i < rv.length - 1; i++)
+//         if (rv[i] == "-") {
+//           rv[i - 1] += "-" + rv[i + 1];
+//           rv.splice(i, 2);
+//           i--;
+//         }
+//     }
+//   } catch (e) {
+//     console.log("parse_vrefs", e);
+//   }
+//   return rv;
+// }

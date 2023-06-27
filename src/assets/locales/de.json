@@ -8,5 +8,8 @@
   "cancel": "Abbrechen",
   "save": "Speichern",
   "no_results": "Keine Ergebnisse gefunden",
-  "search_history": "Suchverlauf"
+  "search_history": "Suchverlauf",
+  "search_picker_enter": "Geben Sie Verse durch Kommas getrennt ein",
+  "search_picker_short": "Sie müssen „Kurzschrift“ verwenden",
+  "search_picker_example": "z.B: 2 Tim. 3:16, Offb. 22:18-19, Kol.1:25, 2 Petr. 1:20-21"
 }

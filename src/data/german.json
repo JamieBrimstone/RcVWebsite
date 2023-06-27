@@ -3267,7 +3267,7 @@
   {
     "id": 42,
     "title": "Johannes",
-    "title_short": "John.",
+    "title_short": "Joh.",
     "chapters": 21,
     "pages": [
       {
@@ -5422,7 +5422,7 @@
   {
     "id": 44,
     "title": "Römer",
-    "title_short": "Römer",
+    "title_short": "Röm.",
     "chapters": 16,
     "pages": [
       {
@@ -8897,7 +8897,7 @@
   {
     "id": 64,
     "title": "Judas",
-    "title_short": "Judas",
+    "title_short": "Jud.",
     "chapters": 1,
     "pages": [
       {
@@ -8935,7 +8935,7 @@
   {
     "id": 65,
     "title": "Offenbarung",
-    "title_short": "Off.",
+    "title_short": "Offb.",
     "chapters": 22,
     "pages": [
       {

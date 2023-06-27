@@ -36,7 +36,7 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
   const [verse, setVerse] = React.useState<number | null>(null);
 
   function handleBookSelect(book: Book) {
-    console.log("book", book);
+    // console.log("book", book);
 
     setBook(book.id);
     setChapter(null);
