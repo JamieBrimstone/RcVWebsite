@@ -10,6 +10,6 @@
   "no_results": "No results found",
   "search_history": "Search History",
   "search_picker_enter": "Enter verses seperated by commas",
-  "search_picker_short": "You must use shorthand",
-  "search_picker_example": "Example: 1 John 1:1, 1 John 1:2, 1 John 1:3"
+  "search_picker_short": "You must use shorthand with periods",
+  "search_picker_example": "Example: Matt. 12:20-24, 1 Thes. 1:1, John. 1:1"
 }
