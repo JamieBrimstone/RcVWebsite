@@ -30,22 +30,7 @@ export interface Book {
     text: string[];
   }[];
 }
-// [
-//   {
-//     "id": 39,
-//     "title": "Matthäus",
-//     "title_short": "Mt.",
-//     "chapters": 28,
-//     "pages": [
-//       {
-//         "id": 1,
-//         "text": [
-//           "1 Das Buch der Abstammung Jesu Christi, des Sohnes Davids, des Sohnes Abrahams:",
-//Bible is an array of books
-// export interface Bible{
-//   //bible is an array of books
-//   [book: string]: Book
-// }
+
 export interface Translation {
   name: string;
   abbreviation: string;
@@ -66,14 +51,24 @@ export const englishJSON = english as Book[];
 export const germanJSON = german as Book[];
 
 const App = () => {
-  // console.log("App rendered");
-
   const { t, i18n } = useTranslation();
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const [settings, setSettings] = useState<Settings>(defaultSettings);
-  const [selectedBook, setSelectedBook] = useState<number>(39);
-  const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
-  const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
+  const [settings, setSettings] = useState<Settings>(() => {
+    const savedSettings = localStorage.getItem('settings');
+    return savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+  });
+  const [selectedBook, setSelectedBook] = useState<number>(() => {
+    const savedBook = localStorage.getItem('selectedBook');
+    return savedBook ? parseInt(savedBook) : 39;
+  });
+  const [selectedChapter, setSelectedChapter] = useState<number | null>(() => {
+    const savedChapter = localStorage.getItem('selectedChapter');
+    return savedChapter ? parseInt(savedChapter) : null;
+  });
+  const [selectedVerse, setSelectedVerse] = useState<number | null>(() => {
+    const savedVerse = localStorage.getItem('selectedVerse');
+    return savedVerse ? parseInt(savedVerse) : null;
+  });
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
   const translations: Translation[] = [
@@ -91,12 +86,26 @@ const App = () => {
     },
   ];
 
+  // Update localStorage when states change
+  useEffect(() => {
+    localStorage.setItem('settings', JSON.stringify(settings));
+  }, [settings]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedBook', selectedBook.toString());
+  }, [selectedBook]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedChapter', selectedChapter?.toString() ?? '');
+  }, [selectedChapter]);
+
+  useEffect(() => {
+    localStorage.setItem('selectedVerse', selectedVerse?.toString() ?? '');
+  }, [selectedVerse]);
+
   // Change language
   const changeLanguage = (language: string) => {
     setSettings({ ...settings, language });
-    // if (language === 'de') {
-    //   setSelectedBook(selectedBook + 39)
-    // }
   };
 
   // Change font size
