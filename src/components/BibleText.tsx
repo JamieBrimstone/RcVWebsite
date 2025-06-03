@@ -31,7 +31,27 @@ const BibleText: React.FC<BibleTextProps> = ({
       const element = document.getElementById(
         `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}`
       );
-      element?.scrollIntoView({ behavior: "smooth", block: "center" });
+      
+      if (element) {
+        // Get the header height
+        const header = document.querySelector('.header');
+        const headerHeight = header?.getBoundingClientRect().height || 0;
+        
+        // Calculate the element's position relative to the viewport
+        const elementRect = element.getBoundingClientRect();
+        const absoluteElementTop = elementRect.top + window.scrollY;
+        
+        if (selectedVerse.verse === 1) {
+          // just scroll to the element
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          // Scroll to the element with an offset for the header
+          window.scrollTo({
+            top: absoluteElementTop - headerHeight,
+            behavior: 'smooth'
+          });
+        }
+      }
     }
   }, [ref, selectedVerse]);
 

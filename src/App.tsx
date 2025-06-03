@@ -63,11 +63,11 @@ const App = () => {
   });
   const [selectedChapter, setSelectedChapter] = useState<number | null>(() => {
     const savedChapter = localStorage.getItem('selectedChapter');
-    return savedChapter ? parseInt(savedChapter) : null;
+    return savedChapter ? parseInt(savedChapter) : 1;
   });
   const [selectedVerse, setSelectedVerse] = useState<number | null>(() => {
     const savedVerse = localStorage.getItem('selectedVerse');
-    return savedVerse ? parseInt(savedVerse) : null;
+    return savedVerse ? parseInt(savedVerse) : 1;
   });
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
   const [showSearchModal, setShowSearchModal] = useState<boolean>(false);
@@ -148,7 +148,7 @@ const App = () => {
   const handleNextChapter = () => {
     const currentBook = translations.find(
       (translation) => translation.language === settings.language
-    )?.bible[selectedBook];
+    )?.bible[settings.language === 'en' ? selectedBook : selectedBook - 39];
     
     if (selectedChapter && currentBook && selectedChapter < currentBook.pages.length) {
       setSelectedChapter(selectedChapter + 1);
@@ -209,7 +209,7 @@ const App = () => {
             {
               translations.find(
                 (translation) => translation.language === settings.language
-              )?.bible[selectedBook]?.title
+              )?.bible[settings.language === 'en' ? selectedBook : selectedBook - 39]?.title
             }
           </h3>
         )}
