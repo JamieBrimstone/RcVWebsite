@@ -59,21 +59,23 @@ const BibleText: React.FC<BibleTextProps> = ({
           )}
         </div>
         <div className="chapter-navigation" style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
-          <button 
-            onClick={onPreviousChapter}
-            disabled={!selectedVerse.chapter || selectedVerse.chapter <= 1}
-            style={{ padding: '8px 16px', cursor: (!selectedVerse.chapter || selectedVerse.chapter <= 1) ? 'not-allowed' : 'pointer' }}
-          >
-            {selectedVerse.chapter ? selectedVerse.chapter - 1 : ''}
-          </button>
+          {selectedVerse.chapter && selectedVerse.chapter > 1 && (
+            <button 
+              onClick={onPreviousChapter}
+              style={{ padding: '8px 16px', cursor: 'pointer' }}
+            >
+              {selectedVerse.chapter - 1}
+            </button>
+          )}
           <span style={{ padding: '8px 16px' }}>Chapter {selectedVerse.chapter}</span>
-          <button 
-            onClick={onNextChapter}
-            disabled={!book || !selectedVerse.chapter || selectedVerse.chapter >= book.pages.length}
-            style={{ padding: '8px 16px', cursor: (!book || !selectedVerse.chapter || selectedVerse.chapter >= book.pages.length) ? 'not-allowed' : 'pointer' }}
-          >
-            {selectedVerse.chapter ? selectedVerse.chapter + 1 : ''}
-          </button>
+          {book && selectedVerse.chapter && selectedVerse.chapter < book.pages.length && (
+            <button 
+              onClick={onNextChapter}
+              style={{ padding: '8px 16px', cursor: 'pointer' }}
+            >
+              {selectedVerse.chapter + 1}
+            </button>
+          )}
         </div>
       </div>
     </div>
