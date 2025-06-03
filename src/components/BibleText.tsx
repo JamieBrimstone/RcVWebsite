@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Book } from "../App";
 
 export interface SelectedVerse {
@@ -11,59 +11,69 @@ export interface BibleTextProps {
   bibleData: Book[];
   language: string;
   fontSize: string;
+  onPreviousChapter: () => void;
+  onNextChapter: () => void;
 }
 
-//display the selected entire book of the bible and scroll to the selcted book or verse
 const BibleText: React.FC<BibleTextProps> = ({
   selectedVerse,
   bibleData,
-  language,
+  // language,
   fontSize,
+  onPreviousChapter,
+  onNextChapter,
 }) => {
-  // console.log("selectedVerse", selectedVerse);
-  // console.log("bibleData", bibleData);
-
   const book = bibleData.find((book) => book.id === selectedVerse.book);
-  console.log("book", book);
-
   const ref = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
-    // console.log("ref", ref);
 
-    if (ref.current) {
-      if (selectedVerse.chapter && selectedVerse.verse) {
-        const element = document.getElementById(
-          `chapter-${selectedVerse.chapter}` +
-            `-verse-${
-              selectedVerse.verse !== 1
-                ? selectedVerse.verse - 1
-                : selectedVerse.verse
-            }`
-        );
-        // console.log("element", element);
-        element?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+  useEffect(() => {
+    if (ref.current && selectedVerse.verse) {
+      const element = document.getElementById(
+        `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}`
+      );
+      element?.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, [ref, selectedVerse]);
-  //check selectedVerse after render
+
+  const currentPage = book?.pages.find(page => page.id === selectedVerse.chapter);
+
   return (
-    <div>
+    <div className="bible-text-container">
       <div>
-        <h2>{book?.title}</h2>
+        {/* <h2>{book?.title}</h2> */}
         <div ref={ref} style={{ fontSize: `${fontSize}px` }}>
-          {book?.pages.map((page) => (
-            <div key={page.id}>
-              <h3 id={`chapter-${page.id}`}>{book.title + " " + page.id}</h3>
-              {page.text.map((line, index) => (
+          {currentPage && (
+            <div>
+              <h3 id={`chapter-${currentPage.id}`}>
+                {book?.title} {currentPage.id}
+              </h3>
+              {currentPage.text.map((line, index) => (
                 <p
-                  key={"verse-" + index + 1}
-                  id={`chapter-${page.id}` + `-verse-${index + 1}`}
+                  key={`verse-${index + 1}`}
+                  id={`chapter-${currentPage.id}-verse-${index + 1}`}
                 >
                   {line}
                 </p>
               ))}
             </div>
-          ))}
+          )}
+        </div>
+        <div className="chapter-navigation" style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '20px' }}>
+          <button 
+            onClick={onPreviousChapter}
+            disabled={!selectedVerse.chapter || selectedVerse.chapter <= 1}
+            style={{ padding: '8px 16px', cursor: (!selectedVerse.chapter || selectedVerse.chapter <= 1) ? 'not-allowed' : 'pointer' }}
+          >
+            {selectedVerse.chapter ? selectedVerse.chapter - 1 : ''}
+          </button>
+          <span style={{ padding: '8px 16px' }}>Chapter {selectedVerse.chapter}</span>
+          <button 
+            onClick={onNextChapter}
+            disabled={!book || !selectedVerse.chapter || selectedVerse.chapter >= book.pages.length}
+            style={{ padding: '8px 16px', cursor: (!book || !selectedVerse.chapter || selectedVerse.chapter >= book.pages.length) ? 'not-allowed' : 'pointer' }}
+          >
+            {selectedVerse.chapter ? selectedVerse.chapter + 1 : ''}
+          </button>
         </div>
       </div>
     </div>

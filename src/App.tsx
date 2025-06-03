@@ -138,6 +138,24 @@ const App = () => {
     setShowMenu(false);
   }
 
+  const handlePreviousChapter = () => {
+    if (selectedChapter && selectedChapter > 1) {
+      setSelectedChapter(selectedChapter - 1);
+      setSelectedVerse(1);
+    }
+  };
+
+  const handleNextChapter = () => {
+    const currentBook = translations.find(
+      (translation) => translation.language === settings.language
+    )?.bible[selectedBook];
+    
+    if (selectedChapter && currentBook && selectedChapter < currentBook.pages.length) {
+      setSelectedChapter(selectedChapter + 1);
+      setSelectedVerse(1);
+    }
+  };
+
   const darkModeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
   const [darkMode, setDarkMode] = useState(darkModeMediaQuery.matches);
 
@@ -252,16 +270,19 @@ const App = () => {
       <div className="main-container">
         {!showMenu && showSearchModal === false && (
           <BibleText
-            fontSize={settings.fontSize.toString()}
             selectedVerse={getSelectedVerse()}
             bibleData={
               translations.find(
                 (translation) => translation.language === settings.language
-              )?.bible ?? translations[0].bible
+              )?.bible || []
             }
             language={settings.language}
+            fontSize={settings.fontSize.toString()}
+            onPreviousChapter={handlePreviousChapter}
+            onNextChapter={handleNextChapter}
           />
         )}
+        
         {showMenu && (
           <BibleMenu
             translations={translations}

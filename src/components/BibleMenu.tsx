@@ -1,7 +1,6 @@
 import React from "react";
 import { Book, Translation } from "../App";
 import "./BibleMenu.css";
-import { useTranslation } from "react-i18next";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 
 interface BibleMenuProps {
@@ -22,7 +21,7 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
   translations,
   selectedBook,
   setSelectedBook,
-  selectedChapter,
+  // selectedChapter,
   setSelectedChapter,
   selectedVerse,
   setSelectedVerse,
@@ -30,10 +29,10 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
   showMenu,
   darkMode,
 }) => {
-  const { t } = useTranslation();
   const [book, setBook] = React.useState<number>(selectedBook);
   const [chapter, setChapter] = React.useState<number | null>(null);
-  const [verse, setVerse] = React.useState<number | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [verse, setVerse] = React.useState<number | null>(selectedVerse);
 
   function handleBookSelect(book: Book) {
     // console.log("book", book);
