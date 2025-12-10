@@ -35,9 +35,7 @@ const BibleText: React.FC<BibleTextProps> = ({
 }) => {
 	const book = bibleData.find((book) => book.id === selectedVerse.book);
 	const ref = React.useRef<HTMLDivElement>(null);
-	const englishScrollRef = React.useRef<HTMLDivElement>(null);
-	const germanScrollRef = React.useRef<HTMLDivElement>(null);
-	const isScrollingRef = React.useRef<boolean>(false);
+	const compareScrollRef = React.useRef<HTMLDivElement>(null);
 	const { t } = useTranslation();
 	// Get books for comparison mode
 	const englishBook = compareMode
@@ -60,79 +58,23 @@ const BibleText: React.FC<BibleTextProps> = ({
 			? germanBook.pages.find((page) => page.id === selectedVerse.chapter)
 			: null;
 
-	// Synchronized scrolling effect for compare mode
-	useEffect(() => {
-		if (!compareMode || !englishScrollRef.current || !germanScrollRef.current) {
-			return;
-		}
-
-		const englishContainer = englishScrollRef.current;
-		const germanContainer = germanScrollRef.current;
-
-		const handleEnglishScroll = () => {
-			if (isScrollingRef.current) return;
-			isScrollingRef.current = true;
-
-			const englishMaxScroll =
-				englishContainer.scrollHeight - englishContainer.clientHeight;
-			const germanMaxScroll =
-				germanContainer.scrollHeight - germanContainer.clientHeight;
-
-			if (englishMaxScroll > 0 && germanMaxScroll > 0) {
-				const englishScrollRatio =
-					englishContainer.scrollTop / englishMaxScroll;
-				germanContainer.scrollTop = englishScrollRatio * germanMaxScroll;
-			}
-
-			requestAnimationFrame(() => {
-				isScrollingRef.current = false;
-			});
-		};
-
-		const handleGermanScroll = () => {
-			if (isScrollingRef.current) return;
-			isScrollingRef.current = true;
-
-			const englishMaxScroll =
-				englishContainer.scrollHeight - englishContainer.clientHeight;
-			const germanMaxScroll =
-				germanContainer.scrollHeight - germanContainer.clientHeight;
-
-			if (englishMaxScroll > 0 && germanMaxScroll > 0) {
-				const germanScrollRatio = germanContainer.scrollTop / germanMaxScroll;
-				englishContainer.scrollTop = germanScrollRatio * englishMaxScroll;
-			}
-
-			requestAnimationFrame(() => {
-				isScrollingRef.current = false;
-			});
-		};
-
-		englishContainer.addEventListener("scroll", handleEnglishScroll);
-		germanContainer.addEventListener("scroll", handleGermanScroll);
-
-		return () => {
-			englishContainer.removeEventListener("scroll", handleEnglishScroll);
-			germanContainer.removeEventListener("scroll", handleGermanScroll);
-		};
-	}, [compareMode]);
-
 	useEffect(() => {
 		if (ref.current && selectedVerse.verse) {
-			const element = document.getElementById(
-				compareMode
-					? `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}-en`
-					: `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}`,
-			);
+			// In compare mode, scroll to English version by default
+			const elementId = compareMode
+				? `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}-en`
+				: `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}`;
+
+			const element = document.getElementById(elementId);
 
 			if (element) {
 				// Get the header height
 				const header = document.querySelector(".header");
 				const headerHeight = header?.getBoundingClientRect().height || 0;
 
-				if (compareMode && englishScrollRef.current) {
-					// For compare mode, scroll within the English container
-					const container = englishScrollRef.current;
+				if (compareMode && compareScrollRef.current) {
+					// For compare mode, scroll within the single container
+					const container = compareScrollRef.current;
 					const elementRect = element.getBoundingClientRect();
 					const containerRect = container.getBoundingClientRect();
 					const scrollTop =
@@ -142,8 +84,8 @@ const BibleText: React.FC<BibleTextProps> = ({
 						headerHeight;
 
 					container.scrollTo({
-						top: scrollTop,
-						behavior: "instant",
+						top: Math.max(0, scrollTop),
+						behavior: "smooth",
 					});
 				} else {
 					// For normal mode, use window scroll
@@ -175,60 +117,53 @@ const BibleText: React.FC<BibleTextProps> = ({
 			<div ref={ref} style={{ fontSize: `${fontSize}px`, flex: 1 }}>
 				{compareMode && englishPage && germanPage ? (
 					<div
+						ref={compareScrollRef}
 						style={{
 							display: "flex",
-							flexDirection: "column",
+							flexDirection: "row",
 							width: "100%",
 							height: "calc(100vh - 120px)",
+							overflowY: "auto",
+							padding: "0 1rem 1rem 1rem",
 						}}
 					>
-						{/* English Translation */}
-						<div
-							ref={englishScrollRef}
-							style={{
-								width: "100%",
-								height: "50%",
-								overflowY: "auto",
-								borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
-							}}
-						>
-							<div style={{ padding: "0 1rem 1rem 1rem" }}>
-								{englishPage.text.map((line, index) => (
-									<p
-										key={`verse-${index + 1}-en`}
-										id={`chapter-${englishPage.id}-verse-${index + 1}-en`}
-									>
-										{line}
-									</p>
-								))}
-							</div>
+						{/* English Translation Section */}
+						<div style={{ marginBottom: "2rem" }}>
+							{englishPage.text.map((line, index) => (
+								<p
+									key={`verse-${index + 1}-en`}
+									id={`chapter-${englishPage.id}-verse-${index + 1}-en`}
+									style={{
+										marginBottom: "0.5rem",
+									}}
+								>
+									{line}
+								</p>
+							))}
 						</div>
-						{/* German Translation */}
+						{/* Divider */}
 						<div
 							style={{
 								borderBottom: darkMode
-									? "2px solid rgba(255, 255, 255, 0.1)"
-									: "2px solid rgba(0, 0, 0, 0.1)",
+									? "2px solid rgba(255, 255, 255, 0.2)"
+									: "2px solid rgba(0, 0, 0, 0.2)",
+								marginBottom: "2rem",
 							}}
 						/>
-						<div
-							ref={germanScrollRef}
-							style={{
-								width: "100%",
-								height: "50%",
-								overflowY: "auto",
-							}}
-						>
-							<div style={{ padding: "0 1rem 1rem 1rem" }}>
-								{germanPage.text.map((line, index) => (
-									<p
-										key={`verse-${index + 1}-de`}
-										id={`chapter-${germanPage.id}-verse-${index + 1}-de`}
-									>
-										{line}
-									</p>
-								))}
-							</div>
+						{/* German Translation Section */}
+						<div>
+							{germanPage.text.map((line, index) => (
+								<p
+									key={`verse-${index + 1}-de`}
+									id={`chapter-${germanPage.id}-verse-${index + 1}-de`}
+									style={{
+										marginBottom: "0.5rem",
+										opacity: 0.9,
+									}}
+								>
+									{line}
+								</p>
+							))}
 						</div>
 					</div>
 				) : currentPage ? (
