@@ -194,6 +194,12 @@ const App = () => {
 		setShowMenu(false);
 	}
 
+	const pageTitle = `${
+		translations.find(
+			(translation) => translation.language === settings.language,
+		)?.bible[settings.language === "en" ? selectedBook : selectedBook - 39]
+			?.title ?? ""
+	} ${selectedChapter ?? ""}`;
 	return (
 		<div
 			className="app-container"
@@ -216,7 +222,7 @@ const App = () => {
 					/>
 				</div>
 				{!showMenu && !showSearchModal && (
-					<h3
+					<h2
 						style={{
 							color: darkMode ? "#fff" : "#000",
 							alignSelf: "flex-start",
@@ -224,14 +230,8 @@ const App = () => {
 							margin: 0,
 						}}
 					>
-						{
-							translations.find(
-								(translation) => translation.language === settings.language,
-							)?.bible[
-								settings.language === "en" ? selectedBook : selectedBook - 39
-							]?.title
-						}
-					</h3>
+						{pageTitle}
+					</h2>
 				)}
 				{showSearchModal && (
 					<h3

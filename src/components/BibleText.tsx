@@ -1,6 +1,7 @@
 /** biome-ignore-all lint/a11y/useButtonType: <Todo> */
 import React, { useEffect } from "react";
 import type { Book } from "../App";
+import { useTranslation } from "react-i18next";
 
 export interface SelectedVerse {
 	book: number;
@@ -35,7 +36,7 @@ const BibleText: React.FC<BibleTextProps> = ({
 	const englishScrollRef = React.useRef<HTMLDivElement>(null);
 	const germanScrollRef = React.useRef<HTMLDivElement>(null);
 	const isScrollingRef = React.useRef<boolean>(false);
-
+	const { t } = useTranslation();
 	// Get books for comparison mode
 	const englishBook = compareMode
 		? englishBible.find((book) => book.id === selectedVerse.book)
@@ -169,7 +170,6 @@ const BibleText: React.FC<BibleTextProps> = ({
 				flexDirection: "column",
 			}}
 		>
-			{/* <h2>{book?.title}</h2> */}
 			<div ref={ref} style={{ fontSize: `${fontSize}px`, flex: 1 }}>
 				{compareMode && englishPage && germanPage ? (
 					<div
@@ -190,19 +190,6 @@ const BibleText: React.FC<BibleTextProps> = ({
 								borderBottom: "1px solid rgba(0, 0, 0, 0.1)",
 							}}
 						>
-							<h3
-								id={`chapter-${englishPage.id}-en`}
-								style={{
-									position: "sticky",
-									top: 0,
-									padding: "1rem",
-									margin: 0,
-									backgroundColor: "white",
-									zIndex: 10,
-								}}
-							>
-								{englishBook?.title} {englishPage.id}
-							</h3>
 							<div style={{ padding: "0 1rem 1rem 1rem" }}>
 								{englishPage.text.map((line, index) => (
 									<p
@@ -223,19 +210,6 @@ const BibleText: React.FC<BibleTextProps> = ({
 								overflowY: "auto",
 							}}
 						>
-							<h3
-								id={`chapter-${germanPage.id}-de`}
-								style={{
-									position: "sticky",
-									top: 0,
-									padding: "1rem",
-									margin: 0,
-									backgroundColor: "white",
-									zIndex: 10,
-								}}
-							>
-								{germanBook?.title} {germanPage.id}
-							</h3>
 							<div style={{ padding: "0 1rem 1rem 1rem" }}>
 								{germanPage.text.map((line, index) => (
 									<p
@@ -250,9 +224,6 @@ const BibleText: React.FC<BibleTextProps> = ({
 					</div>
 				) : currentPage ? (
 					<div>
-						<h3 id={`chapter-${currentPage.id}`}>
-							{book?.title} {currentPage.id}
-						</h3>
 						{currentPage.text.map((line, index) => (
 							<p
 								key={`verse-${index + 1}`}
@@ -267,11 +238,15 @@ const BibleText: React.FC<BibleTextProps> = ({
 			<div
 				className="chapter-navigation"
 				style={{
-					marginTop: "auto",
+					position: "sticky",
+					bottom: 0,
 					display: "flex",
 					justifyContent: "center",
 					gap: "20px",
 					paddingBottom: "1rem",
+					paddingTop: "1rem",
+					backgroundColor: "white",
+					zIndex: 20,
 				}}
 			>
 				{selectedVerse.chapter && selectedVerse.chapter > 1 && (
@@ -283,7 +258,7 @@ const BibleText: React.FC<BibleTextProps> = ({
 					</button>
 				)}
 				<span style={{ padding: "8px 16px" }}>
-					Chapter {selectedVerse.chapter}
+					{t("chapter")} {selectedVerse.chapter}
 				</span>
 				{book &&
 					selectedVerse.chapter &&
