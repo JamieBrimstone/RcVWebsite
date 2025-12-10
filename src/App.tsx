@@ -305,6 +305,7 @@ const App = () => {
 						compareMode={compareMode}
 						englishBible={englishJSON}
 						germanBible={germanJSON}
+						darkMode={darkMode}
 					/>
 				)}
 

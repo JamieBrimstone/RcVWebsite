@@ -18,6 +18,7 @@ export interface BibleTextProps {
 	compareMode?: boolean;
 	englishBible?: Book[];
 	germanBible?: Book[];
+	darkMode?: boolean;
 }
 
 const BibleText: React.FC<BibleTextProps> = ({
@@ -30,6 +31,7 @@ const BibleText: React.FC<BibleTextProps> = ({
 	compareMode = false,
 	englishBible = [],
 	germanBible = [],
+	darkMode,
 }) => {
 	const book = bibleData.find((book) => book.id === selectedVerse.book);
 	const ref = React.useRef<HTMLDivElement>(null);
@@ -141,7 +143,7 @@ const BibleText: React.FC<BibleTextProps> = ({
 
 					container.scrollTo({
 						top: scrollTop,
-						behavior: "smooth",
+						behavior: "instant",
 					});
 				} else {
 					// For normal mode, use window scroll
@@ -203,6 +205,13 @@ const BibleText: React.FC<BibleTextProps> = ({
 						</div>
 						{/* German Translation */}
 						<div
+							style={{
+								borderBottom: darkMode
+									? "2px solid rgba(255, 255, 255, 0.1)"
+									: "2px solid rgba(0, 0, 0, 0.1)",
+							}}
+						/>
+						<div
 							ref={germanScrollRef}
 							style={{
 								width: "100%",
@@ -245,7 +254,7 @@ const BibleText: React.FC<BibleTextProps> = ({
 					gap: "20px",
 					paddingBottom: "1rem",
 					paddingTop: "1rem",
-					backgroundColor: "white",
+					backgroundColor: darkMode ? "#333" : "#fff",
 					zIndex: 20,
 				}}
 			>
