@@ -120,51 +120,60 @@ const BibleText: React.FC<BibleTextProps> = ({
 						ref={compareScrollRef}
 						style={{
 							display: "flex",
-							flexDirection: "row",
+							flexDirection: "column",
 							width: "100%",
 							height: "calc(100vh - 120px)",
 							overflowY: "auto",
 							padding: "0 1rem 1rem 1rem",
 						}}
 					>
-						{/* English Translation Section */}
-						<div style={{ marginBottom: "2rem" }}>
-							{englishPage.text.map((line, index) => (
-								<p
-									key={`verse-${index + 1}-en`}
-									id={`chapter-${englishPage.id}-verse-${index + 1}-en`}
+						{englishPage.text.map((line, index) => {
+							const germanLine = germanPage.text[index] ?? "";
+							return (
+								<div
+									key={`verse-${index + 1}-compare`}
 									style={{
-										marginBottom: "0.5rem",
+										display: "flex",
+										flexDirection: "row",
+										alignItems: "stretch",
+										gap: "1rem",
 									}}
 								>
-									{line}
-								</p>
-							))}
-						</div>
-						{/* Divider */}
-						<div
-							style={{
-								borderBottom: darkMode
-									? "2px solid rgba(255, 255, 255, 0.2)"
-									: "2px solid rgba(0, 0, 0, 0.2)",
-								marginBottom: "2rem",
-							}}
-						/>
-						{/* German Translation Section */}
-						<div>
-							{germanPage.text.map((line, index) => (
-								<p
-									key={`verse-${index + 1}-de`}
-									id={`chapter-${germanPage.id}-verse-${index + 1}-de`}
-									style={{
-										marginBottom: "0.5rem",
-										opacity: 0.9,
-									}}
-								>
-									{line}
-								</p>
-							))}
-						</div>
+									<p
+										id={`chapter-${englishPage.id}-verse-${index + 1}-en`}
+										style={{
+											flex: 1,
+											minWidth: 0,
+											margin: 0,
+										}}
+									>
+										{line}
+									</p>
+									<div
+										style={{
+											width: 2,
+											flexShrink: 0,
+											backgroundColor: darkMode
+												? "rgba(255, 255, 255, 0.2)"
+												: "rgba(0, 0, 0, 0.2)",
+											alignSelf: "stretch",
+										}}
+										aria-hidden
+									/>
+									<p
+										id={`chapter-${germanPage.id}-verse-${index + 1}-de`}
+										style={{
+											flex: 1,
+											minWidth: 0,
+											margin: 0,
+											opacity: 0.9,
+										}}
+									>
+										{germanLine}
+									</p>
+								</div>
+							);
+						})}
 					</div>
 				) : currentPage ? (
 					<div>
