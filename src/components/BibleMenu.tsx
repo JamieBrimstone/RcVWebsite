@@ -29,6 +29,7 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
 	showMenu,
 	darkMode,
 }) => {
+	const menuScrollRef = React.useRef<HTMLDivElement>(null);
 	const [book, setBook] = React.useState<number>(selectedBook);
 	const [chapter, setChapter] = React.useState<number | null>(null);
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -71,17 +72,17 @@ const BibleMenu: React.FC<BibleMenuProps> = ({
 		}
 	}
 
-	//useEffect that scrolls to top on first render
 	React.useEffect(() => {
 		if (showMenu) {
-			window.scrollTo(0, 0);
+			menuScrollRef.current?.scrollTo(0, 0);
 		}
 	}, [showMenu]);
 
 	return (
 		<div
+			ref={menuScrollRef}
 			className="bible-menu"
-			style={{ ...darkModeStyle, overflowY: "scroll", width: "100%" }}
+			style={darkModeStyle}
 		>
 			{book >= 0 ? (
 				<div>

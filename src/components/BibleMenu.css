@@ -1,32 +1,34 @@
 .bible-menu {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding-top: 1rem;
-  align-self: flex-start;
-  align-items: flex-start;
-  overflow-x: hidden;
+	flex: 1 1 auto;
+	min-height: 0;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	width: 100%;
+	padding-top: 1rem;
+	align-self: stretch;
+	overflow-x: hidden;
+	overflow-y: auto;
 }
 
 #growth {
-  overflow-y: scroll;
+	overflow-y: scroll;
 }
 
 .bible-menu button {
-  margin: .25rem;
-  margin-left: 0;
-  padding: 0.5rem;
-  border: none;
-  border-radius: 0rem;
-  background-color: #f5f5f5;
-  color: #333;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+	margin: 0.25rem;
+	margin-left: 0;
+	padding: 0.5rem;
+	border: none;
+	border-radius: 0rem;
+	background-color: #f5f5f5;
+	color: #333;
+	font-size: 1rem;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.2s ease-in-out;
 }
 
 .bible-menu button:hover {
-  background-color: #e0e0e0;
+	background-color: #e0e0e0;
 }

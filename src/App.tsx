@@ -325,23 +325,33 @@ const App = () => {
 					/>
 				)}
 				{showSearchModal && !showMenu && (
-					<Search
-						onClose={() => setShowSearchModal(false)}
-						isOpen={showSearchModal}
-						darkMode={darkMode}
-						//books is current translation
-						books={
-							translations.find(
-								(translation) => translation.language === settings.language,
-							)?.bible ?? translations[0].bible
-						}
-						onSelected={(_book, bookId, chapter, verse) => {
-							setShowSearchModal(false);
-							setSelectedBook(bookId);
-							setSelectedChapter(chapter);
-							setSelectedVerse(verse);
+					<div
+						style={{
+							flex: 1,
+							minHeight: 0,
+							overflowY: "auto",
+							display: "flex",
+							flexDirection: "column",
 						}}
-					/>
+					>
+						<Search
+							onClose={() => setShowSearchModal(false)}
+							isOpen={showSearchModal}
+							darkMode={darkMode}
+							//books is current translation
+							books={
+								translations.find(
+									(translation) => translation.language === settings.language,
+								)?.bible ?? translations[0].bible
+							}
+							onSelected={(_book, bookId, chapter, verse) => {
+								setShowSearchModal(false);
+								setSelectedBook(bookId);
+								setSelectedChapter(chapter);
+								setSelectedVerse(verse);
+							}}
+						/>
+					</div>
 				)}
 			</div>
 			{showSettingsModal && !showSearchModal && (

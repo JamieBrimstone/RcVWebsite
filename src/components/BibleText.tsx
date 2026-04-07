@@ -34,8 +34,7 @@ const BibleText: React.FC<BibleTextProps> = ({
 	darkMode,
 }) => {
 	const book = bibleData.find((book) => book.id === selectedVerse.book);
-	const ref = React.useRef<HTMLDivElement>(null);
-	const compareScrollRef = React.useRef<HTMLDivElement>(null);
+	const contentScrollRef = React.useRef<HTMLDivElement>(null);
 	const { t } = useTranslation();
 	// Get books for comparison mode
 	const englishBook = compareMode
@@ -59,80 +58,57 @@ const BibleText: React.FC<BibleTextProps> = ({
 			: null;
 
 	useEffect(() => {
-		if (ref.current && selectedVerse.verse) {
-			// In compare mode, scroll to English version by default
-			const elementId = compareMode
-				? `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}-en`
-				: `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}`;
+		const container = contentScrollRef.current;
+		if (!container || !selectedVerse.verse) {
+			return;
+		}
 
-			const element = document.getElementById(elementId);
+		const elementId = compareMode
+			? `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}-en`
+			: `chapter-${selectedVerse.chapter}-verse-${selectedVerse.verse}`;
 
-			if (element) {
-				// Get the header height
-				const header = document.querySelector(".header");
-				const headerHeight = header?.getBoundingClientRect().height || 0;
+		const element = document.getElementById(elementId);
 
-				if (compareMode && compareScrollRef.current) {
-					// For compare mode, scroll within the single container
-					const container = compareScrollRef.current;
-					const elementRect = element.getBoundingClientRect();
-					const containerRect = container.getBoundingClientRect();
-					const scrollTop =
-						container.scrollTop +
-						elementRect.top -
-						containerRect.top -
-						headerHeight;
+		if (!element) {
+			return;
+		}
 
-					container.scrollTo({
-						top: Math.max(0, scrollTop),
-						behavior: "smooth",
-					});
-				} else {
-					// For normal mode, use window scroll
-					const elementRect = element.getBoundingClientRect();
-					const absoluteElementTop = elementRect.top + window.scrollY;
+		const elementRect = element.getBoundingClientRect();
+		const containerRect = container.getBoundingClientRect();
+		const scrollTop =
+			container.scrollTop + elementRect.top - containerRect.top;
 
-					if (selectedVerse.verse === 1) {
-						element.scrollIntoView({ behavior: "smooth", block: "center" });
-					} else {
-						window.scrollTo({
-							top: absoluteElementTop - headerHeight,
-							behavior: "smooth",
-						});
-					}
-				}
-			}
+		if (selectedVerse.verse === 1) {
+			const targetTop = scrollTop - (containerRect.height - elementRect.height) / 2;
+			container.scrollTo({
+				top: Math.max(0, targetTop),
+				behavior: "smooth",
+			});
+		} else {
+			container.scrollTo({
+				top: Math.max(0, scrollTop),
+				behavior: "smooth",
+			});
 		}
 	}, [selectedVerse, compareMode]);
 
 	return (
-		<div
-			className="bible-text-container"
-			style={{
-				height: "100%",
-				display: "flex",
-				flexDirection: "column",
-			}}
-		>
+		<div className="bible-text-container">
 			<div
-				ref={ref}
+				ref={contentScrollRef}
+				className="bible-text-scroll"
 				style={{
 					fontSize: `${fontSize}px`,
-					flex: 1,
 					paddingLeft: "1rem",
 					paddingRight: "1rem",
 				}}
 			>
 				{compareMode && englishPage && germanPage ? (
 					<div
-						ref={compareScrollRef}
 						style={{
 							display: "flex",
 							flexDirection: "column",
 							width: "100%",
-							height: "calc(100vh - 120px)",
-							overflowY: "auto",
-							overflowX: "hidden",
 							padding: "0 1rem 1rem 0",
 						}}
 					>
@@ -200,13 +176,12 @@ const BibleText: React.FC<BibleTextProps> = ({
 			<div
 				className="chapter-navigation"
 				style={{
-					position: "absolute",
+					flexShrink: 0,
 					width: "100%",
-					bottom: 0,
 					display: "flex",
 					justifyContent: "center",
 					gap: "20px",
-					paddingBottom: "1rem",
+					paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
 					paddingTop: "1rem",
 					backgroundColor: darkMode ? "#333" : "#fff",
 					zIndex: 20,
