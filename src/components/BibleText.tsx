@@ -114,7 +114,15 @@ const BibleText: React.FC<BibleTextProps> = ({
 				flexDirection: "column",
 			}}
 		>
-			<div ref={ref} style={{ fontSize: `${fontSize}px`, flex: 1 }}>
+			<div
+				ref={ref}
+				style={{
+					fontSize: `${fontSize}px`,
+					flex: 1,
+					paddingLeft: "1rem",
+					paddingRight: "1rem",
+				}}
+			>
 				{compareMode && englishPage && germanPage ? (
 					<div
 						ref={compareScrollRef}
@@ -124,7 +132,8 @@ const BibleText: React.FC<BibleTextProps> = ({
 							width: "100%",
 							height: "calc(100vh - 120px)",
 							overflowY: "auto",
-							padding: "0 1rem 1rem 1rem",
+							overflowX: "hidden",
+							padding: "0 1rem 1rem 0",
 						}}
 					>
 						{englishPage.text.map((line, index) => {
@@ -191,7 +200,8 @@ const BibleText: React.FC<BibleTextProps> = ({
 			<div
 				className="chapter-navigation"
 				style={{
-					position: "sticky",
+					position: "absolute",
+					width: "100%",
 					bottom: 0,
 					display: "flex",
 					justifyContent: "center",
